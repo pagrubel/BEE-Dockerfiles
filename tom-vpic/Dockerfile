@@ -10,6 +10,9 @@ RUN apt-get -y install \
 # follow instructions in https://github.com/docker/docker/issues/5663
 RUN sed -ri 's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' /etc/pam.d/sshd
 
+
+
+
 # setup ssh keys and config
 COPY id_rsa /root/.ssh/
 COPY id_rsa.pub /root/.ssh/
@@ -19,6 +22,10 @@ RUN sed -i 's/Port 22/Port 9222/' /etc/ssh/sshd_config
 
 # add no password login
 RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+
+
+
 
 WORKDIR /root
 

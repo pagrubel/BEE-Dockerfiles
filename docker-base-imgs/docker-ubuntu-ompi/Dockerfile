@@ -35,16 +35,18 @@ RUN apt-get -y install \
 
 #RUN groupadd -r albuntu -g $gid && useradd -r -m -g albuntu -u $uid albuntu -s /bin/bash
 
+RUN useradd -ms /bin/bash  beeuser
+ 
 
 #Install SSH
 RUN mkdir /var/run/sshd
 RUN sed -ri 's/^session\s+required\s+pam_loginuid.so$/session optional pam_loginuid.so/' /etc/pam.d/sshd
-RUN mkdir /root/.ssh/
-COPY id_rsa /root/.ssh/
-COPY id_rsa.pub /root/.ssh/
-COPY config /root/.ssh/
-RUN chmod 0700 /root/.ssh; chmod 0600 /root/.ssh/*
-RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+RUN mkdir /home/beeuser/.ssh/
+COPY id_rsa /home/beeuser/.ssh/
+COPY id_rsa.pub /home/beeuser/.ssh/
+COPY config /home/beeuser/.ssh/
+RUN chmod 0700 /home/beeuser/.ssh; chmod 0600 /home/beeuser/.ssh/*
+RUN cat /home/beeuser/.ssh/id_rsa.pub >> /home/beeuser/.ssh/authorized_keys
 RUN sed -i 's/Port 22/Port 9222/' /etc/ssh/sshd_config
 
 #Install MPI
@@ -61,8 +63,10 @@ RUN (echo "LD_LIBRARY_PATH=/usr/local/lib"; echo "") >> /etc/environment
 
 #RUN cd ./openmpi-2.0.2/examples && make
 
-#RUN mkdir /mnt/docker_share
+RUN mkdir /mnt/docker_share
+RUN chown -R beeuser:beeuser /mnt
 
-USER root
+USER beeuser
+
 #WORKDIR /home/albuntu
 

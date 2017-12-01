@@ -1,4 +1,6 @@
-from ubuntu:16.04
+from cjy7117/ubuntu-ompi
+
+USER root
 
 ENV http_proxy 'http://proxyout.lanl.gov:8080'
 ENV https_proxy 'http://proxyout.lanl.gov:8080'
@@ -10,28 +12,28 @@ RUN apt-get update
 
 RUN apt-get -y install \
   autoconf\
-  cmake\
-  gcc\
-  git\
-  gfortran\
-  g++\
-  libtool\
-  libva-dev\
-  openssh-server\
-  pkg-config\
-  python\
-  python-dev\
-  python-pip\
-  xutils-dev\
-  wget \
+#  cmake\
+#  gcc\
+#  git\
+ # gfortran\
+ # g++\
+ # libtool\
+  #libva-dev\
+ # openssh-server\
+ # pkg-config\
+ # python\
+ # python-dev\
+ # python-pip\
+ # xutils-dev\
+ # wget \
   libpthread-stubs0-dev
 
 # install MPI
-RUN wget https://www.open-mpi.org/software/ompi/v2.0/downloads/openmpi-2.0.2.tar.gz
-RUN tar -xzf openmpi-2.0.2.tar.gz
-RUN cd ./openmpi-2.0.2 && ./configure CC=gcc CXX=g++ FC=gfortran && make -j 8 all && make install
-RUN (echo "LD_LIBRARY_PATH=/usr/local/lib"; echo "") >> /etc/environment
-ENV LD_LIBRARY_PATH=/usr/local/lib
+#RUN wget https://www.open-mpi.org/software/ompi/v2.0/downloads/openmpi-2.0.2.tar.gz
+#RUN tar -xzf openmpi-2.0.2.tar.gz
+#RUN cd ./openmpi-2.0.2 && ./configure CC=gcc CXX=g++ FC=gfortran && make -j 8 all && make install
+#RUN (echo "LD_LIBRARY_PATH=/usr/local/lib"; echo "") >> /etc/environment
+#ENV LD_LIBRARY_PATH=/usr/local/lib
 
 # needed by mesa
 RUN pip install mako
@@ -40,7 +42,7 @@ RUN pip install mako
 WORKDIR /usr/local
 # this link will expire as mesa gets older and then become stable in an old release
 # download, unpack, and remove tar file...keeps image smaller and reduces number of layers
-RUN wget https://mesa.freedesktop.org/archive/13.0.6/mesa-13.0.6.tar.gz && tar xvzf mesa-13.0.6.tar.gz && rm mesa-13.0.6.tar.gz
+RUN wget mesa.freedesktop.org/archive/older-versions/13.x/13.0.6/mesa-13.0.6.tar.gz && tar xvzf mesa-13.0.6.tar.gz && rm mesa-13.0.6.tar.gz
 
 WORKDIR /usr/local/mesa-13.0.6
 
@@ -66,7 +68,7 @@ RUN ./configure \
 #    --with-egl-platforms="" \
 #    --prefix=/work/apps/mesa/9.2.2/llvmpipe
 
-RUN make; make install
+RUN make -j 8; make install
 
 #RUN ln -s /usr/local/mesa-11.2.1/lib/gallium/libOSMesa.so /usr/local/lib
 
@@ -79,7 +81,7 @@ RUN git clone http://anongit.freedesktop.org/git/mesa/glu.git
 WORKDIR /usr/local/glu
 RUN ./autogen.sh --enable-osmesa
 RUN ./configure --enable-osmesa
-RUN make
+RUN make -j 8
 RUN make install
 
 
@@ -122,7 +124,7 @@ RUN cmake \
   -DPARAVIEW_USE_MPI=ON \
   /usr/local/paraview
  
-RUN make -j8
+RUN make -j 8
 RUN make install
 RUN cp /usr/local/lib/paraview-5.2/*.* /usr/local/lib/
 

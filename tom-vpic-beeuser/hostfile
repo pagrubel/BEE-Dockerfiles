@@ -1,0 +1,2 @@
+bee-master slots=4
+bee-worker001 slots=4
