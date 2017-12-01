@@ -52,6 +52,8 @@ ADD runvpic.sh /home/beeuser
 ADD vpic_config /home/beeuser
 ADD vpic_config2 /home/beeuser
 
+RUN chown -R beeuser:beeuser /home/beeuser/.ssh
+
 USER beeuser
 
 #RUN mkdir /var/run/sshd
