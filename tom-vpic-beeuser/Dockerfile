@@ -1,7 +1,7 @@
 from cjy7117/pvcat
 
-ENV http_proxy=“”
-ENV https_proxy=“”
+ENV http_proxy=""
+ENV https_proxy=""
 
 
 RUN apt-get update
