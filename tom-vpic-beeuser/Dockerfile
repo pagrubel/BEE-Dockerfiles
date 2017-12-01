@@ -3,6 +3,8 @@ from cjy7117/pvcat
 ENV http_proxy=""
 ENV https_proxy=""
 
+RUN echo '' > /etc/apt/apt.conf.d/docker-clean
+
 
 RUN apt-get update
 
