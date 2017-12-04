@@ -1,6 +1,6 @@
 # Download base image ubuntu 16.04
 #FROM ubuntu:16.04
-FROM cjy7117/ubuntu1604-ompi
+FROM cjy7117/ubuntu-ompi
 # Author
 MAINTAINER Pascal Grosset
 
@@ -58,5 +58,8 @@ WORKDIR /home/flecsale/build
 RUN cmake .. -DUSE_CATALYST:BOOL=ON
 RUN make -j16
 
+RUN chown -R beeuser:beeuser /home
+
 # Expose the ParaView Catalyst Port
 EXPOSE 22222
+

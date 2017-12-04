@@ -4,6 +4,8 @@ FROM cjy7117/ubuntu-ompi
 # Author
 MAINTAINER Pascal Grosset
 
+USER beeuser
+
 RUN ls /home
 
 # add proxy
@@ -36,7 +38,7 @@ RUN ls
 RUN wget https://www.paraview.org/files/v5.2/ParaView-v5.2.0.tar.gz 
 RUN tar -zxvf ParaView-v5.2.0.tar.gz
 
-#RUN git clone --recursive -b flecsale_catalyst https://github.com/laristra/flecsale.git
+RUN git clone --recursive -b flecsale_catalyst https://github.com/laristra/flecsale.git
 RUN ls
 
 
@@ -58,5 +60,8 @@ WORKDIR /home/flecsale/build
 RUN cmake .. -DUSE_CATALYST:BOOL=ON
 RUN make -j16
 
+RUN chown -R beeuser:beeuser /home
+
 # Expose the ParaView Catalyst Port
 EXPOSE 22222
+
