@@ -1,0 +1,3 @@
+A prebuilt container is in docker hub /pagrubel/lammps-beeuser
+
+Dockerfile builds from pagrubel/ubuntu-ompi-beeuser -  built using Dockerfile-ompi-beeuser
