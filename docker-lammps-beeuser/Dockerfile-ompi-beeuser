@@ -59,7 +59,7 @@ RUN tar -xzf openmpi-2.0.2.tar.gz
 RUN rm openmpi-2.0.2.tar.gz
 RUN cd ./openmpi-2.0.2 && ./configure CC=gcc CXX=g++ FC=gfortran && make -j 8 all && make install
 #ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-ldconfig
+#ldconfig
 
 #if use /bin/sh
 #COPY .profile /home/albuntu/
@@ -71,5 +71,6 @@ RUN (echo "LD_LIBRARY_PATH=/usr/local/lib"; echo "") >> /etc/environment
 
 RUN mkdir /mnt/docker_share
 RUN chown -R beeuser:beeuser /mnt
-
+USER beeuser 
+WORKDIR /home/beeuser
 
